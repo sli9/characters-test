@@ -1,20 +1,12 @@
-
-export type Info = {
-  count: number;
-  pages: number;
-  next: string | null;
-  prev: string | null;
-}
-
-export type Origin = {
+type Origin = {
   name: string;
   url: string;
-}
+};
 
-export type Location = {
+type Location = {
   name: string;
   url: string;
-}
+};
 
 export type Character = {
   id: number;
@@ -29,4 +21,9 @@ export type Character = {
   episode: string[];
   url: string;
   created: string;
-}
+};
+
+export type DomainCharacter = Pick<
+  Character,
+  'id' | 'name' | 'status' | 'created' | 'url'
+>;

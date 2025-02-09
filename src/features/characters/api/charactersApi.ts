@@ -1,14 +1,22 @@
 import { baseApi } from '../../../app/baseApi';
-import { BaseResponse } from '../../../common/types.ts';
-import { Character } from './charactersApi.types.ts';
+import { BaseResponse } from '../../../common/types/types.ts';
+import { Character, DomainCharacter } from './charactersApi.types.ts';
 
-export const todolistsApi = baseApi.injectEndpoints({
+export const charactersApi = baseApi.injectEndpoints({
   endpoints: (build) => {
     return {
-      getCharacters: build.query<Pick<Character, 'name' & 'url'>[], void>({
-        query: () => 'character',
-        transformResponse(response: BaseResponse<Character[]>) {
-          return response.results.map((character) => ({ name: character.name, url: character.url }));
+      getCharacters: build.query<DomainCharacter[], string>({
+        query: (name) => `character/?name=${name}`,
+        transformResponse(
+          response: BaseResponse<Character[]>
+        ): DomainCharacter[] {
+          return response.results.map((character) => ({
+            id: character.id,
+            name: character.name,
+            url: character.url,
+            status: character.status,
+            created: character.created,
+          }));
         },
         providesTags: ['Characters'],
       }),
@@ -16,4 +24,4 @@ export const todolistsApi = baseApi.injectEndpoints({
   },
 });
 
-export const { useGetCharactersQuery } = todolistsApi;
+export const { useGetCharactersQuery } = charactersApi;
