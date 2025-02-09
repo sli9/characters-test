@@ -1,4 +1,4 @@
-import '../App.css';
+import './App.css';
 import { CharactersList } from '../features/characters/ui/CharactersList.tsx';
 import { ChangeEvent, useState } from 'react';
 import { useGetCharactersQuery } from '../features/characters/api/charactersApi.ts';
@@ -17,17 +17,29 @@ function App() {
     setInputValue(e.target.value);
   };
 
+  let charactersForRender = characters;
+  if (debouncedValue.trim().length < 4) {
+    charactersForRender = undefined;
+  }
+
   return (
     <>
-      <input
-        type="text"
-        placeholder={'Search characters...'}
-        onChange={onChangeHandler}
-        value={inputValue}
-        autoFocus
-      />
+      <div className={'inputWrapper'}>
+        <input
+          type="text"
+          placeholder={'Search characters...'}
+          onChange={onChangeHandler}
+          value={inputValue}
+          autoFocus
+        />
+        <span>
+          {charactersForRender
+            ? `Found characters: ${charactersForRender.length}`
+            : ''}
+        </span>
+      </div>
       <div>
-        <CharactersList characters={characters} />
+        <CharactersList characters={charactersForRender} />
       </div>
     </>
   );

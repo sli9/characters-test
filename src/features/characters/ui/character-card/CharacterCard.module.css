@@ -1,0 +1,36 @@
+.characterCard {
+    background-color: #fff;
+    padding: 20px 34px;
+    box-shadow: 0 7px 25px 0 #64646F33;
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h3 {
+    font-size: 30px;
+    Line-height: 30px;
+}
+
+.status {
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+}
+
+p span {
+    font-weight: 700;
+}
+
+.alive {
+    color: var(--alive-color);
+}
+.dead {
+    color: var(--dead-color);
+}
