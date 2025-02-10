@@ -8,5 +8,5 @@ export const baseApi = createApi({
     })(args, api, extraOptions);
   },
   endpoints: () => ({}),
-  tagTypes: ['Characters'],
+  tagTypes: ['Characters', 'Character'],
 });

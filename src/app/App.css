@@ -4,18 +4,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  --alive-color: #287606;
-  --dead-color: #830c0c;
-}
-
-h1, h1, h3, h4, h5, h6 {
- margin: 0;
-  font-weight: 400;
-}
-
-p {
-  margin: 0;
 }
 
 .inputWrapper {
