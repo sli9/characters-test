@@ -1,4 +1,4 @@
-type Info = {
+export type Info = {
   count: number;
   pages: number;
   next: string | null;

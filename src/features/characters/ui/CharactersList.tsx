@@ -1,10 +1,10 @@
-import { DomainCharacter } from '../api/charactersApi.types.ts';
+import { Character } from '../api/charactersApi.types.ts';
 import { memo } from 'react';
 import { CharacterCard } from './character-card/CharacterCard.tsx';
 import s from './CharactersList.module.css';
 
 type Props = {
-  characters?: DomainCharacter[];
+  characters?: Character[];
 };
 
 export const CharactersList = memo(({ characters }: Props) => {
