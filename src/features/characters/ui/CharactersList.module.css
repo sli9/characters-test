@@ -1,3 +1,7 @@
+.charactersContainer {
+    padding: 20px;
+}
+
 .cardsHead {
     height: 262px;
     display: flex;
@@ -14,4 +18,18 @@
     gap: 20px;
 }
 
+@media (max-width: 1100px) {
+    .charactersGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cardsHead {
+        flex-direction: column;
+    }
+}
 
+@media (max-width: 768px) {
+    .charactersGrid, .cardsHead {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px
+    }
+}

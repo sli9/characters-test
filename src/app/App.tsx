@@ -1,4 +1,3 @@
-import './App.css';
 import { Routing } from '../common/routing/Routing.tsx';
 
 function App() {

@@ -9,7 +9,7 @@ type Props = {
 
 export const CharactersList = memo(({ characters }: Props) => {
   return (
-    <>
+    <div className={s.charactersContainer}>
       <div className={s.cardsHead}>
         {characters
           ?.slice(0, 2)
@@ -24,6 +24,6 @@ export const CharactersList = memo(({ characters }: Props) => {
             <CharacterCard key={character.id} character={character} />
           ))}
       </div>
-    </>
+    </div>
   );
 });

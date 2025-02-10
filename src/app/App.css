@@ -45,3 +45,16 @@ input:focus {
   outline: none;
   box-shadow: 0 7px 12px 0 #39393C66;
 }
+
+@media (max-width: 768px) {
+  input {
+    min-width: 250px;
+    min-height: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
+  .inputWrapper {
+    padding-top: 50px;
+    gap: 6px;
+  }
+}

@@ -1,3 +1,4 @@
+import './App.css';
 import { ChangeEvent, useState } from 'react';
 import { useDebounce } from '../common/hooks/useDebounce.ts';
 import { useGetCharactersQuery } from '../features/characters/api/charactersApi.ts';
@@ -64,7 +65,7 @@ export const Main = () => {
         </span>
         {error && <span style={{ color: '#ea2e34' }}>{errMsg}</span>}
       </div>
-      {characters && (
+      {charactersForRender && (
         <Pagination
           info={characters?.info}
           onChangePage={handleChangePage}
