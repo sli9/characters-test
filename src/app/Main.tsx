@@ -7,7 +7,7 @@ import { Pagination } from '../common/components/pagination/Pagination.tsx';
 
 export const Main = () => {
   const [inputValue, setInputValue] = useState('');
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<string>();
 
   const debouncedValue = useDebounce(inputValue, 1000);
 
@@ -17,9 +17,9 @@ export const Main = () => {
     error,
   } = useGetCharactersQuery(
     {
+      url: page,
       args: {
         name: debouncedValue.trim(),
-        page,
       },
     },
     {
@@ -31,8 +31,8 @@ export const Main = () => {
     setInputValue(e.target.value);
   };
 
-  const handleChangePage = (pageUrl: number) => {
-    setPage(pageUrl);
+  const handleChangePage = (pageUrl: string | null) => {
+    setPage(pageUrl ?? undefined);
   };
 
   let charactersForRender = characters;
@@ -66,16 +66,10 @@ export const Main = () => {
         {error && <span style={{ color: '#ea2e34' }}>{errMsg}</span>}
       </div>
       {charactersForRender && (
-        <Pagination
-          info={characters?.info}
-          onChangePage={handleChangePage}
-          currentPage={page}
-        />
+        <Pagination info={characters?.info} onChangePage={handleChangePage} />
       )}
-      <div>
-        {isFetching && <h1>Loading...</h1>}
-        <CharactersList characters={charactersForRender?.results} />
-      </div>
+      {isFetching && <h1>Loading...</h1>}
+      <CharactersList characters={charactersForRender?.results} />
     </>
   );
 };

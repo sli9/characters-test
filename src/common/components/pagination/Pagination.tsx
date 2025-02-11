@@ -3,27 +3,29 @@ import s from './Pagination.module.css';
 
 type Props = {
   info?: Info;
-  onChangePage: (page: number) => void;
-  currentPage: number;
+  onChangePage: (pageUrl: string | null) => void;
 };
 
-export const Pagination = ({ info, onChangePage, currentPage }: Props) => {
+export const Pagination = ({ info, onChangePage }: Props) => {
+  const onClickHandler = (pageUrl: string | null) => {
+    onChangePage(pageUrl);
+  };
+
   return (
     <div className={s.paginationBox}>
       {info?.prev && (
         <button
           onClick={() => {
-            onChangePage(currentPage - 1);
+            onClickHandler(info?.prev);
           }}
         >
           prev
         </button>
       )}
-      <span>{currentPage}</span>
       {info?.next && (
         <button
           onClick={() => {
-            onChangePage(currentPage + 1);
+            onClickHandler(info?.next);
           }}
         >
           next

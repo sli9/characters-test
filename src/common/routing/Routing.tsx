@@ -4,7 +4,7 @@ import { Main } from '../../app/Main.tsx';
 
 export const Path = {
   Main: '/',
-  Character: 'character/:id',
+  Character: `:id`,
   NotFound: '*',
 } as const;
 
