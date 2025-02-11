@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Main } from '../../app/Main.tsx';
 
 export const Path = {
-  Main: '/',
+  Main: 'characters-test',
   Character: `:id`,
   NotFound: '*',
 } as const;
