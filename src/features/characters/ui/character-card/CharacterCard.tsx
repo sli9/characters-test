@@ -19,7 +19,7 @@ export const CharacterCard = ({ character }: Props) => {
     .join('.');
 
   return (
-    <Link to={`${character.id}`}>
+    <Link to={`/character/${character.id}`}>
       <div className={s.characterCard}>
         <h3 className={s.name}>{character.name}</h3>
         <div className={s.status}>
