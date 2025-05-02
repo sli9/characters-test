@@ -1,75 +1,82 @@
 import './App.css';
-import { ChangeEvent, useState } from 'react';
-import { useDebounce } from '../common/hooks/useDebounce.ts';
-import { useGetCharactersQuery } from '../features/characters/api/charactersApi.ts';
-import { CharactersList } from '../features/characters/ui/CharactersList.tsx';
-import { Pagination } from '../common/components/pagination/Pagination.tsx';
+import { useEffect, useRef } from 'react';
+import { useGetTransCharactersInfiniteQuery } from '../features/characters/api/charactersApi.ts';
 
 export const Main = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [page, setPage] = useState<string>();
-
-  const debouncedValue = useDebounce(inputValue, 1000);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   const {
-    data: characters,
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
     isFetching,
-    error,
-  } = useGetCharactersQuery(
-    {
-      url: page,
-      args: {
-        name: debouncedValue.trim(),
+  } = useGetTransCharactersInfiniteQuery();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetching) {
+          if (entries[0].target.id === 'next-trigger') {
+            window.scrollBy(0, -(entries[0].target.clientHeight + 10));
+            fetchNextPage();
+          }
+          if (entries[0].target.id === 'prev-trigger') {
+            window.scrollBy(0, entries[0].target.clientHeight + 10);
+            fetchPreviousPage();
+          }
+        }
       },
-    },
-    {
-      skip: debouncedValue.trim().length < 4,
+      { threshold: 1 }
+    );
+
+    const nextLoader = nextRef.current;
+    const prevLoader = prevRef.current;
+    if (nextLoader) {
+      observer.observe(nextLoader);
     }
-  );
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleChangePage = (pageUrl: string | null) => {
-    setPage(pageUrl ?? undefined);
-  };
-
-  let charactersForRender = characters;
-  if (debouncedValue.trim().length < 4 || !!error) {
-    charactersForRender = undefined;
-  }
-
-  let errMsg = 'Something happened';
-  if (error) {
-    if ('data' in error) {
-      const errorData = error.data as { error: string };
-      errMsg = errorData.error;
+    if (prevLoader) {
+      observer.observe(prevLoader);
     }
-  }
+
+    return (): void => {
+      if (nextLoader) {
+        observer.unobserve(nextLoader);
+      }
+      if (prevLoader) {
+        observer.unobserve(prevLoader);
+      }
+    };
+  }, [
+    data,
+    hasNextPage,
+    hasPreviousPage,
+    isFetching,
+    fetchNextPage,
+    fetchPreviousPage,
+  ]);
+
+  const allResults = data?.pages.map((page) => page.characters).flat();
 
   return (
-    <>
-      <div className={'inputWrapper'}>
-        <input
-          type="text"
-          placeholder={'Search characters...'}
-          onChange={onChangeHandler}
-          value={inputValue}
-          autoFocus
-        />
-        <span>
-          {charactersForRender
-            ? `Found characters: ${charactersForRender.info.count}`
-            : ''}
-        </span>
-        {error && <span style={{ color: '#ea2e34' }}>{errMsg}</span>}
-      </div>
-      {charactersForRender && (
-        <Pagination info={characters?.info} onChangePage={handleChangePage} />
+    <div>
+      {hasPreviousPage && (
+        <div id={'prev-trigger'} ref={prevRef} style={{ color: 'red' }}>
+          Fetch Previous
+        </div>
       )}
-      {isFetching && <h1>Loading...</h1>}
-      <CharactersList characters={charactersForRender?.results} />
-    </>
+      <div>
+        {allResults?.map((pokemon, i: number | null | undefined) => (
+          <div key={i}>{pokemon}</div>
+        ))}
+      </div>
+      {hasNextPage && (
+        <div id={'next-trigger'} ref={nextRef} style={{ color: 'red' }}>
+          Fetch More
+        </div>
+      )}
+    </div>
   );
 };
